@@ -21648,6 +21648,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         if (res == null || res.messages == null) {
             return;
         }
+        ArrayList<MessageObject> notSponsoredMessages = new ArrayList<>();
         for (int i = 0; i < res.messages.size(); i++) {
             MessageObject messageObject = res.messages.get(i);
             messageObject.resetLayout();
@@ -21675,7 +21676,12 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                             continue;
                         }
                         if (postId < 0) continue;
-                        getMessagesController().ensureMessagesLoaded(did, postId, null);
+                        if (!messageObject.isSponsored()) {
+		                    getMessagesController().ensureMessagesLoaded(did, postId, null);
+	                        notSponsoredMessages.add(messageObject);
+		                } else {
+		                    markSponsoredAsRead(messageObject);
+		                }
                     }
                 } catch (Exception e) {
                     FileLog.e(e);
@@ -21683,11 +21689,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             }
         }
         sponsoredMessagesAdded = true;
-        sponsoredMessagesPostsBetween = res.posts_between != null ? res.posts_between : 0;
-        if (notPushedSponsoredMessages != null) {
-            notPushedSponsoredMessages.clear();
-        }
-        processNewMessages(res.messages);
+        if (notSponsoredMessages.isEmpty()) return;
+        processNewMessages(notSponsoredMessages);
     }
 
     private void removeFromSponsored(MessageObject message) {
@@ -22788,14 +22791,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     }
 
     private int getSponsoredMessagesCount() {
-        int sponsoredMessagesCount = 0;
-        while (sponsoredMessagesCount < messages.size()) {
-            if (!messages.get(sponsoredMessagesCount).isSponsored()) {
-                break;
-            }
-            sponsoredMessagesCount++;
-        }
-        return sponsoredMessagesCount;
+        return 0;
     }
 
     private void processDeletedMessages(ArrayList<Integer> markAsDeletedMessages, long channelId, boolean sent) {

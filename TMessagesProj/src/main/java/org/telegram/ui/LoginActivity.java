@@ -2344,27 +2344,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                     }
                 });
             }
-
-            if (BuildVars.DEBUG_PRIVATE_VERSION && activityMode == MODE_LOGIN) {
-                testBackendCheckBox = new CheckBoxCell(context, 2);
-                testBackendCheckBox.setText(getString(R.string.DebugTestBackend), "", testBackend, false);
-                addView(testBackendCheckBox, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.MATCH_PARENT, Gravity.LEFT | Gravity.TOP, 16, 0, 16 + (LocaleController.isRTL && AndroidUtilities.isSmallScreen() ? Build.VERSION.SDK_INT >= 21 ? 56 : 60 : 0), 0));
-                bottomMargin -= 24;
-                testBackendCheckBox.setOnClickListener(v -> {
-                    if (getParentActivity() == null) {
-                        return;
-                    }
-                    CheckBoxCell cell = (CheckBoxCell) v;
-                    testBackend = !testBackend;
-                    cell.setChecked(testBackend, true);
-
-                    boolean testBackend = BuildVars.DEBUG_VERSION && getConnectionsManager().isTestBackend();
-                    if (testBackend != LoginActivity.this.testBackend) {
-                        getConnectionsManager().switchBackend(false);
-                    }
-                    loadCountries();
-                });
-            }
+            
             if (bottomMargin > 0 && !AndroidUtilities.isSmallScreen()) {
                 Space bottomSpacer = new Space(context);
                 bottomSpacer.setMinimumHeight(AndroidUtilities.dp(bottomMargin));
