@@ -1639,7 +1639,7 @@ public final class Util {
    * @return A user agent string generated using the applicationName and the library version.
    */
   public static String getUserAgent(Context context, String applicationName) {
-    String versionName;
+    /*String versionName;
     try {
       String packageName = context.getPackageName();
       PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
@@ -1653,7 +1653,7 @@ public final class Util {
         + " (Linux;Android "
         + Build.VERSION.RELEASE
         + ") "
-        + ExoPlayerLibraryInfo.VERSION_SLASHY;
+        + ExoPlayerLibraryInfo.VERSION_SLASHY;*/
   }
 
   /** Returns the number of codec strings in {@code codecs} whose type matches {@code trackType}. */
